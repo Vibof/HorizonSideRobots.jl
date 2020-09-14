@@ -43,7 +43,7 @@
 При этом, чтобы подготовить файл "infile.sit" мы предварительно могли бы воспользоваться функцией `sitcreate`
 
 ```julia
-    julia> sitcreate("infile.sit")
+    julia> sitcreate(11,12;newfile="infile.sit")
 
 если потом понадобилось бы еще скорректировать файл "infile.sit", то следовало бы воспользоваться функцией `sitedit`
 
