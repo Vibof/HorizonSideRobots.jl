@@ -217,7 +217,7 @@ end
 sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = sitedit!(Situation((num_rows, num_colons)), newfile)
 
 # вспомогательные функции:
-is_inside(r::Robot) = SituationData.is_inside(r.situation) # - проверяет, находится ли робот в фрейме (в наблюдаемой части поля)
+is_inside(r::Robot) = SituationDatas.is_inside(r.situation) # - проверяет, находится ли робот в фрейме (в наблюдаемой части поля)
 position(r::Robot) = r.situation.robot_position # - возвращает текущую позицию робота, т.е. - пару индексов (i,j)
 
 end # module HorizonSideRobots
