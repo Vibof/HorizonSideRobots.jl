@@ -314,8 +314,7 @@ module SituationData
     function sitedit!(sit::Situation, file::AbstractString)
     # - открывает обстановку, соответствующей структуре данных sit, в НОВОМ окне
     # - обеспечивает возможность редактирования обстановки с помощью мыши
-    # - результат сохраняет в файле file 
-    # - одновременно с этим обстановка сохраняется в файле "situation.png" (в формате png)
+    # - результат сохраняет в 2-х форматах: в файле file (sit-файл) и в файле file*".png" (в формате png)
         global BUFF_SITUATION, IS_FIXED_ROBOT_POSITION
         BUFF_SITUATION=sit
         draw(BUFF_SITUATION; newfig=true)
@@ -344,7 +343,7 @@ using .SituationData
 .    - в третьем случае - обстановка загружается из указанного файла
 
 -- Если animate=true, то при этом открывается окно с соответствующей начальной обстановкой 
-(которую можно будет редактировать, и результат редактирования будет сохраняться в файлах "untitled.sit", "situation.png"). 
+(которую можно будет редактировать, и результат редактирования будет сохраняться в файлах "untitled.sit", "untitled.sit.png"). 
 Иначе просто создается объект, соодержащий данные, определяющие эту обстановку (визуализации обстановки в этом случае нет).
 
 Командный интерфейс исполнителя (объекта) типа Robot: `move!`, `isboarder`, `putmarker`, `ismarker`, `temperature`, `show`, `show!` (см. help)
@@ -476,6 +475,7 @@ end
 
 -- Открывает окно с текущей обстановкой на поле с роботом, и предоставляет возможность редактирования
  обстановки с помощью мыши (устанавливать/снимать перегородки и/или маркеры, перемещать робота).
+ Результ редактирования автоматически сохраняется в файлах "temp.sit" и "temp.sit.png" 
 """
 function show!(r::Robot)
     pre_show_actions(r)
@@ -508,8 +508,7 @@ save(r::Robot, outfile::AbstractString)=save(r.situation,outfile)
     sitedit(infile::AbstractString; outfile=infile)::Nothing
 
 -- предназначена для визуального (с помощью мыши) редактирования обстановки на поле с роботом, предварительно сохраненной в sit-файле. 
-Результат редактирования сохораняется в выходном sit-файле (который по умолчанию совпадает с входным sit-файлом)    
-Одновременно с этим обстановка сохраняется также в файле "situation.png" (в формате png)
+Результат редактирования сохраняется в 2-х форматах: в outfile (sit-файле) и в файле outfile*".png" (в формате png)
 """
 function sitedit(infile::AbstractString; outfile=infile)
     global BUFF_SITUATION, IS_FIXED_ROBOT_POSITION
@@ -521,8 +520,7 @@ end
     sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit")::Nothing
 
 -- предназначена для создания и визуального (с помощью мыши) редактирования нового sit-файле (содержащего данные некоторой обстановки на поле сроботом). 
-По умолчанию имя создаваемого файла - "untitled.sit" 
-Одновременно с этим обстановка сохраняется также в файле "situation.png" (в формате png)   
+Результат редактирования сохраняется в 2-х форматах: в newfile (sit-файле) и в файле newfile*".png" (в формате png)   
 """    
 sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = sitedit!(Situation((num_rows, num_colons)), newfile)
 
