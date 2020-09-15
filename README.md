@@ -19,3 +19,6 @@
 * [Начальные сведения о языке программирования Julia](content/language.md)
 
 В Wiki-разделе имеется также [Руководство по программированию](https://github.com/Vibof/HorizonSideRobots.jl/wiki), которое находится пока в состоянии развития.
+
+--------------------------------------
+[Назад](https://github.com/Vibof/HorizonSideRobots.jl)
