@@ -307,8 +307,7 @@ module SituationData
         # Изменения должны отображаться в тех же самых координатных осях, где они и были произведены, поэтому обязательно должно быть 
         # newfig==false
         save(BUFF_SITUATION, file)
-        savefig("situation.png";format="png")
-        #, facecolor=rcParams["figure.facecolor"], edgecolor=’w’, orientation=’portrait’, papertype=None, transparent=False, bbox_inches=None, pad_inches=0.1)
+        savefig(file*".png";format="png") #, facecolor=rcParams["figure.facecolor"], edgecolor=’w’, orientation=’portrait’, papertype=None, transparent=False, bbox_inches=None, pad_inches=0.1)
     end # function handle_button_press_event!
     
 
