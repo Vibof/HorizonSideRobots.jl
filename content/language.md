@@ -613,7 +613,7 @@ julia> exit()
 
 Более подробные сведения о языке Julia можно почерпнуть, например, 
 
-[здесь](https://techytok.com/from-zero-to-julia/), а также [здесь](http://www.lib.unn.ru/students/src/JULIA_tutorial.pdf), или [здесь](https://biologo.ru/korotko-o-yazike-programmirovaniya/index.pdf).
+[здесь](https://techytok.com/from-zero-to-julia/), а также [здесь](http://www.lib.unn.ru/students/src/JULIA_tutorial.pdf), или [здесь](https://biologo.ru/korotko-o-yazike-programmirovaniya/index8.pdf).
 Однако информация о некоторых функциях, содержащаяся в двух последних источниках, может оказаться устаревшей, т.к. она относится к еще не стабильным версиям языка (до 1.0).
 
 Для более полного ознакомления с языком следует обращаться к [фирменной документации](https://docs.julialang.org/en/v1/)
