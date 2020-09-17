@@ -17,3 +17,7 @@
 * [Коротко о языке программирования Julia](https://biologo.ru/korotko-o-yazike-programmirovaniya/index.pdf) (незначительно устарело)
 * [Julia. Знакомство](https://habr.com/ru/post/423811/)
 * [Игорь Ерёменко. Введение в язык программирования Julia на русском](https://github.com/YermolenkoIgor/Julia_tutorial_rus)
+
+------------------------
+
+[<< к README](../README.md)
