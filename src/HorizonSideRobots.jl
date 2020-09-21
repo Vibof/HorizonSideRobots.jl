@@ -2,14 +2,14 @@
 
 # DATE: 2020 09 12 15-03
 
-module HorizonSideRobots # "робот на клетчатом поле со сторонами горизонта"
+module HorizonSideRobots # "Робот на клетчатом поле со сторонами горизонта"
 
 export HorizonSide, Nord, Sud, West, Ost, Robot, move!, isborder, putmarker!, ismarker, temperature, show, show!, save, sitedit, sitcreate
 
 """
     @enum HorizonSide Nord=0 West=1 Sud=2 Ost=3
 
--- Определяет стороны горизонта на клетчатом поле с роботом: Nord - Север (вверху), West - Запад (слева), Sud - Юг (внизу), Ost - Восток (справа)     
+-- Определяет стороны горизонта на клетчатом поле с Роботом: Nord - Север (вверху), West - Запад (слева), Sud - Юг (внизу), Ost - Восток (справа)     
 """
 @enum HorizonSide Nord=0 West=1 Sud=2 Ost=3
 
@@ -28,7 +28,7 @@ using .SituationDatas
 
 -- Конструктор объектов типа `Robot` (исполнитель "Робот на клетчатом поле со сторонами горизонта типа HorizonSide"):
 
-.    - в первом случае - пустое ограниченное поле будет иметь размер 11х12 и робот будет - в левом нижнем углу
+.    - в первом случае - пустое ограниченное поле будет иметь размер 11х12 и Робот будет - в левом нижнем углу
 
 .    - во втором случае - поле будет иметь указанные размеры
 
@@ -46,7 +46,7 @@ using .SituationDatas
 """
 mutable struct Robot
     situation::SituationData
-    animate::Bool # если true, то - имеет место непрерывная визуализация смены обстановки при выполнении команд робота
+    animate::Bool # если true, то - имеет место непрерывная визуализация смены обстановки при выполнении команд Робота
     actualfigure::Union{Nothing,Figure}
     Robot(sit::SituationData;animate=false) = begin 
         if animate==true 
@@ -62,7 +62,7 @@ end
 """
     move!(r::Robot, side::HorizonSide)::Nothing
 
--- Перемещает робота в соседнюю клетку в заданном направлении (если только на пути нет перегoродки, в противном случае - прерывание)
+-- Перемещает Робота в соседнюю клетку в заданном направлении (если только на пути нет перегoродки, в противном случае - прерывание)
 """
 function move!(r::Robot, side::HorizonSideRobots.HorizonSide)
     if isborder(r,side)==true   
@@ -109,7 +109,7 @@ function isborder(r::Robot,side::HorizonSideRobots.HorizonSide)::Bool
     else # - (i,j) - в пределах фрейма (is_inside(r) == true)
         if r.situation.is_framed == true
             if side==Nord && i==1 || side==Sud && i==imax || side==West && j==1 || side==Ost && j==jmax
-                return true # - робот рядом с внешней рамкой и направление - в сторону рамку
+                return true # - Робот рядом с внешней рамкой и направление - в сторону рамку
             end
         end 
         return is_inner_border(r.situation.robot_position, side, r.situation.borders_map)[1] # side ∈ r.situation.borders_map[i,j]
@@ -119,7 +119,7 @@ end # function isborder
 """
     putmarker!(r::Robot)::Nothing
 
--- Ставит маркер в клетке с роботом
+-- Ставит маркер в клетке с Роботом
 """
 putmarker!(r::Robot)::Nothing = begin 
     push!(r.situation.markers_map, position(r))
@@ -132,14 +132,14 @@ end
 """
     ismarker(r::Robot)::Bool
 
--- Проверяет наличие маркера в клетке с роботом
+-- Проверяет наличие маркера в клетке с Роботом
 """
 ismarker(r::Robot)::Bool = position(r) ∈ r.situation.markers_map 
     
 """
     temperature(r::Robot)::Int
 
--- Возвращает значение "температуры" клетки с роботом (на самом деле, всюду за пределами видимой части поля температура равна 0)
+-- Возвращает значение "температуры" клетки с Роботом (на самом деле, всюду за пределами видимой части поля температура равна 0)
 """
 temperature(r::Robot)::Int = is_inside(r) ? r.situation.temperature_map[position(r)...] : 0
 
@@ -147,13 +147,13 @@ import Base.show
 """
     show(r::Robot)::Nothing
 
--- Открывает окно с текущей обстановкой на поле с роботом, при этом невозможно редактирование обстановки с помощью мыши 
-(устанавливать/снимать перегородки и/или маркеры, перемещать робота). Если же необходимо иметь возможность 
+-- Открывает окно с текущей обстановкой на поле с Роботом, при этом невозможно редактирование обстановки с помощью мыши 
+(устанавливать/снимать перегородки и/или маркеры, перемещать Робота). Если же необходимо иметь возможность 
 редактировать показанную обстановку, то вместо show(::Robot) следует использовать функцию show!(::Robot)
 
     show(sitfile::AbstractString)::Nothing
 
--- Открывает окно с текущей обстановкой на поле с роботом, загруженной непосредственно из файла. 
+-- Открывает окно с текущей обстановкой на поле с Роботом, загруженной непосредственно из файла. 
 Редактирование обстановки невозможно (для редактирования sit-файлов имеется специальная функция sitedit).    
 """
 function show(r::Robot) 
@@ -165,8 +165,8 @@ end
 """
     show!(r::Robot)::Nothing
 
--- Открывает окно с текущей обстановкой на поле с роботом, и предоставляет возможность редактирования
- обстановки с помощью мыши (устанавливать/снимать перегородки и/или маркеры, перемещать робота).
+-- Открывает окно с текущей обстановкой на поле с Роботом, и предоставляет возможность редактирования
+ обстановки с помощью мыши (устанавливать/снимать перегородки и/или маркеры, перемещать Робота).
  Результ редактирования автоматически сохраняется в файлах "temp.sit" и "temp.sit.png" 
 """
 function show!(r::Robot)
@@ -192,14 +192,14 @@ show(sitfile::AbstractString) = sitfile!="temp.sit" ? show(Robot(sitfile)) : (@w
 """
     save(r::Robot, sitfile::AbstractString)::Nothing
 
--- сохраняет обстановку на поле с роботом в указанном текстовом файле    
+-- сохраняет обстановку на поле с Роботом в указанном текстовом файле    
 """
 save(r::Robot, outfile::AbstractString)=save(r.situation,outfile)
 
 """
     sitedit(infile::AbstractString; outfile=infile)::Nothing
 
--- предназначена для визуального (с помощью мыши) редактирования обстановки на поле с роботом, предварительно сохраненной в sit-файле. 
+-- предназначена для визуального (с помощью мыши) редактирования обстановки на поле с Роботом, предварительно сохраненной в sit-файле. 
 Результат редактирования сохраняется в 2-х форматах: в outfile (sit-файле) и в файле outfile*".png" (в формате png)
 """
 function sitedit(infile::AbstractString; outfile=infile)
@@ -214,10 +214,10 @@ end
 -- предназначена для создания и визуального (с помощью мыши) редактирования нового sit-файле (содержащего данные некоторой обстановки на поле сроботом). 
 Результат редактирования сохраняется в 2-х форматах: в newfile (sit-файле) и в файле newfile*".png" (в формате png)   
 """    
-sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = sitedit!(Situation((num_rows, num_colons)), newfile)
+sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = sitedit!(SituationData((num_rows, num_colons)), newfile)
 
 # вспомогательные функции:
-is_inside(r::Robot) = SituationDatas.is_inside(r.situation) # - проверяет, находится ли робот в фрейме (в наблюдаемой части поля)
-position(r::Robot) = r.situation.robot_position # - возвращает текущую позицию робота, т.е. - пару индексов (i,j)
+is_inside(r::Robot) = SituationDatas.is_inside(r.situation) # - проверяет, находится ли Робот в фрейме (в наблюдаемой части поля)
+position(r::Robot) = r.situation.robot_position # - возвращает текущую позицию Робота, т.е. - пару индексов (i,j)
 
 end # module HorizonSideRobots
