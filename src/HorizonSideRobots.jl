@@ -51,7 +51,7 @@ mutable struct Robot
     actualfigure::Union{Nothing,Figure}
     Robot(sit::SituationData;animate=false) = begin 
         if animate==true 
-            sitedit!(sit, "untitled.sit")  
+            SituationDatas.sitedit!(sit, "untitled.sit")  
         end 
         new(sit,animate,nothing) 
     end
@@ -172,7 +172,7 @@ end
 """
 function show!(r::Robot)
     pre_show_actions(r)
-    sitedit!(r.situation,"temp.sit")
+    SituationDatas.sitedit!(r.situation,"temp.sit")
     # обеспечена возможность редактирования с помощью мыши отображаемой обстановки и немедленного сохранения каждого акта редактирвания в файле temp.sit 
     r.actualfigure=gcf()
     return nothing 
@@ -206,7 +206,7 @@ save(r::Robot, outfile::AbstractString)=save(r.situation,outfile)
 function sitedit(infile::AbstractString; outfile=infile)
     global BUFF_SITUATION, IS_FIXED_ROBOT_POSITION
     BUFF_SITUATION=SituationData(infile) #; show(BUFF_SITUATION)
-    sitedit!(BUFF_SITUATION, outfile)
+    SituationDatas.sitedit!(BUFF_SITUATION, outfile)
 end
 
 """
@@ -215,15 +215,14 @@ end
 -- предназначена для создания и визуального (с помощью мыши) редактирования нового sit-файле (содержащего данные некоторой обстановки на поле сроботом). 
 Результат редактирования сохраняется в 2-х форматах: в newfile (sit-файле) и в файле newfile*".png" (в формате png)   
 """    
-sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = sitedit!(SituationData((num_rows, num_colons)), newfile)
+sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = SituationDatas.sitedit!(SituationData((num_rows, num_colons)), newfile)
 
-import .SituationDatas
 """
     sitedit!(r::Robot,sitfile::AbstractString)
 
 -- позволяет транслировать в уже имеющийся объект типа Robot обстановку из файла
 """
-sitedit!(r::Robot,sitfile::AbstractString) = SituationDatas.sitedit!(r.situation, sitfile)
+SituationDatas.sitedit!(r::Robot,sitfile::AbstractString) = sitedit!(r.situation, sitfile)
 
 # вспомогательные функции:
 is_inside(r::Robot) = SituationDatas.is_inside(r.situation) # - проверяет, находится ли Робот в фрейме (в наблюдаемой части поля)
