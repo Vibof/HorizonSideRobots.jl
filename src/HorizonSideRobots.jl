@@ -217,12 +217,13 @@ end
 """    
 sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = sitedit!(SituationData((num_rows, num_colons)), newfile)
 
+import .SituationData
 """
     sitedit!(r::Robot,sitfile::AbstractString)
 
 -- позволяет транслировать в уже имеющийся объект типа Robot обстановку из файла
 """
-SituationData.sitedit!(r::Robot,sitfile::AbstractString) = sitedit!(r.situation, sitfile)
+sitedit!(r::Robot,sitfile::AbstractString) = sitedit!(r.situation, sitfile)
 
 # вспомогательные функции:
 is_inside(r::Robot) = SituationDatas.is_inside(r.situation) # - проверяет, находится ли Робот в фрейме (в наблюдаемой части поля)
