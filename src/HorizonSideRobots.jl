@@ -222,7 +222,7 @@ sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = sited
 
 -- позволяет транслировать в уже имеющийся объект типа Robot обстановку из файла
 """
-sitedit!(r::Robot,sitfile::AbstractString) = sitedit!(r.situation, sitfile)
+SituationData.sitedit!(r::Robot,sitfile::AbstractString) = sitedit!(r.situation, sitfile)
 
 # вспомогательные функции:
 is_inside(r::Robot) = SituationDatas.is_inside(r.situation) # - проверяет, находится ли Робот в фрейме (в наблюдаемой части поля)
