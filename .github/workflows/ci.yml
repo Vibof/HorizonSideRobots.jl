@@ -31,8 +31,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.arch }}
       - run: |
-          /usr/bin/python3 -m pip install --upgrade pip
-          /usr/bin/python3 -m pip install matplotlib
+          python -m pip install --upgrade pip
+          python -m pip install matplotlib
       - name: Setup Julia
         uses: julia-actions/setup-julia@v1
         with:
@@ -62,14 +62,15 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v1
         with:
-            python-version: ${{ matrix.python-version }}
-            architecture: ${{ matrix.arch }}
+            python-version: '3.7'
+            architecture: x64
       - run: |
-          /usr/bin/python3 -m pip install --upgrade pip
-          /usr/bin/python3 -m pip install matplotlib
-      - uses: julia-actions/setup-julia@latest
+          python -m pip install --upgrade pip
+          python -m pip install matplotlib
+      - uses: julia-actions/setup-julia@v1
         with:
           version: '1.4'
+          arch: x64
       - run: |
           julia --project=docs -e '
             using Pkg

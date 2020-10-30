@@ -9,7 +9,6 @@ makedocs(;
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://Vibof.github.io/HorizonSideRobots.jl",
-        siteurl="https://github.com/Vibof/HorizonSideRobots.jl",
         assets=String[],
     ),
     pages=[
