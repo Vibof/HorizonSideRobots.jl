@@ -15,16 +15,26 @@ jobs:
         version:
           - '1.3'
           - '1.5'
-          - 'nightly'
         os:
           - ubuntu-latest
           - macOS-latest
           - windows-latest
         arch:
           - x64
+        python-version:
+          - '3.7'
     steps:
       - uses: actions/checkout@v2
-      - uses: julia-actions/setup-julia@v1
+      - name: Setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.arch }}
+      - run: |
+          /usr/bin/python3 -m pip install --upgrade pip
+          /usr/bin/python3 -m pip install matplotlib
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v1
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
@@ -49,6 +59,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Setup python
+        uses: actions/setup-python@v1
+        with:
+            python-version: ${{ matrix.python-version }}
+            architecture: ${{ matrix.arch }}
+      - run: |
+          /usr/bin/python3 -m pip install --upgrade pip
+          /usr/bin/python3 -m pip install matplotlib
       - uses: julia-actions/setup-julia@latest
         with:
           version: '1.4'

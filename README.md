@@ -5,7 +5,7 @@
 [![Build Status](https://github.com/Arkoniak/HorizonSideRobots.jl/workflows/CI/badge.svg)](https://github.com/Arkoniak/HorizonSideRobots.jl/actions)
 [![Coverage](https://codecov.io/gh/Arkoniak/HorizonSideRobots.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/Arkoniak/HorizonSideRobots.jl)
 
-![Пример обстановки на поле](content/for_readme.png)
+![Пример обстановки на поле](docs/src/extra/for_readme.png)
 
 Данное ПО предназначено для поддержки начального курса программирования для студентов-первокурсников, целью которого является научить писать хорошо структурированный программный код, основываясь на технологии проектирования сверху вниз и включая использование идей обобщенного программирования. Оно помогает легко формулировать учебные задачи, сложность которых можно варьировать в достаточно широких пределах, и на которых можно научить/научиться всему заявленному, по крайней мере, в некотором приближении.
 
@@ -17,11 +17,11 @@
 
 ## ОГЛАВЛЕНИЕ 
 
-* [Как установить Робота на своем компьютере](content/setup.md)
-* [Конструктор объектов типа Robot](content/constructor.md)
-* [Командный интерфейс Робота](content/api.md)
-* [Пример выполнения программы для Робота](content/example.md)
-* [Начальные сведения о языке программирования Julia](content/language.md)
+* [Как установить Робота на своем компьютере](https://arkoniak.github.io/HorizonSideRobots.jl/dev/setup.md)
+* [Конструктор объектов типа Robot](https://arkoniak.github.io/HorizonSideRobots.jl/dev/constructor.md)
+* [Командный интерфейс Робота](https://arkoniak.github.io/HorizonSideRobots.jl/dev/api.md)
+* [Пример выполнения программы для Робота](https://arkoniak.github.io/HorizonSideRobots.jl/dev/example.md)
+* [Начальные сведения о языке программирования Julia](https://arkoniak.github.io/HorizonSideRobots.jl/dev/language.md)
 
 В Wiki-разделе имеется также [Руководство по программированию](https://github.com/Vibof/HorizonSideRobots.jl/wiki), которое находится пока в состоянии развития.
 
