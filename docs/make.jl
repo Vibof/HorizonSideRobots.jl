@@ -4,11 +4,11 @@ using Documenter
 makedocs(;
     modules=[HorizonSideRobots],
     authors="Виктор Федоров <fdorov@mail.ru>",
-    repo="https://github.com/Arkoniak/HorizonSideRobots.jl/blob/{commit}{path}#L{line}",
+    repo="https://github.com/Vibof/HorizonSideRobots.jl/blob/{commit}{path}#L{line}",
     sitename="HorizonSideRobots.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://Arkoniak.github.io/HorizonSideRobots.jl",
+        canonical="https://Vibof.github.io/HorizonSideRobots.jl",
         assets=String[],
     ),
     pages=[
@@ -22,5 +22,5 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/Arkoniak/HorizonSideRobots.jl",
+    repo="github.com/Vibof/HorizonSideRobots.jl",
 )
