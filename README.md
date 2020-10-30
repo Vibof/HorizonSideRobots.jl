@@ -1,5 +1,10 @@
 # РОБОТ НА КЛЕТЧАТОМ ПОЛЕ СО СТОРОНАМИ ГОРИЗОНТА
 
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://Arkoniak.github.io/HorizonSideRobots.jl/stable)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://Arkoniak.github.io/HorizonSideRobots.jl/dev)
+[![Build Status](https://github.com/Arkoniak/HorizonSideRobots.jl/workflows/CI/badge.svg)](https://github.com/Arkoniak/HorizonSideRobots.jl/actions)
+[![Coverage](https://codecov.io/gh/Arkoniak/HorizonSideRobots.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/Arkoniak/HorizonSideRobots.jl)
+
 ![Пример обстановки на поле](content/for_readme.png)
 
 Данное ПО предназначено для поддержки начального курса программирования для студентов-первокурсников, целью которого является научить писать хорошо структурированный программный код, основываясь на технологии проектирования сверху вниз и включая использование идей обобщенного программирования. Оно помогает легко формулировать учебные задачи, сложность которых можно варьировать в достаточно широких пределах, и на которых можно научить/научиться всему заявленному, по крайней мере, в некотором приближении.
