@@ -50,8 +50,6 @@ module SituationDatas
             body_create(sit.coefficient,x,y) # тело - полупрозрачное
         end
         
-        marker_create(coefficient::AbstractFloat,x::AbstractFloat,y::AbstractFloat) = scatter([x],[y],c=MARKER_COLOR,s=MARKER_SIZE*coefficient,marker=MARKER_STYLE)
-        
         function field_create(axes_size::Tuple{UInt,UInt}, newfig::Bool) 
         # -- создает пустое поле заданных размеров, разделенное на клетки размером 1х1 каждая
             rcParams = PyPlot.PyDict(PyPlot.matplotlib."rcParams")
@@ -105,9 +103,15 @@ module SituationDatas
         if sit.is_framed == true
             plot([0,sit.frame_size[2],sit.frame_size[2],0,0], [0,0,sit.frame_size[1],sit.frame_size[1],0], linewidth=BORDER_WIDTH, color=BORDER_COLOR)
         end
+
+        xs, ys = [], []
         for position ∈ sit.markers_map
-            marker_create(sit.coefficient,get_coordinates(position)...)
+            a, b = get_coordinates(position)
+            push!(xs, a)
+            push!(ys, b)
         end
+        scatter(xs, ys, c=MARKER_COLOR,s=MARKER_SIZE*sit.coefficient,marker=MARKER_STYLE)
+
         if is_inside(sit)==true # робот - в пределах поля (иная ситуация может возникнуть при перемещениях робота)
             robot_create(get_coordinates(sit.robot_position)...)            
         end
