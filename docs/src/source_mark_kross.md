@@ -31,8 +31,4 @@ end
 
 # Возвращает направление, противоположное заданному
 inverse(side::HorizonSide) = HorizonSide(mod(Int(side)+2, 4)) 
-````
-
-----------------
-
-[Назад](../content/example.md)
+```
