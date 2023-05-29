@@ -91,30 +91,28 @@ function isborder(r::Robot,side::HorizonSideRobots.HorizonSide)::Bool
         if side ∈ (Nord,Sud)
             return false # в этих двух направлениях перепятствий быть не может (т.к. на периметре фрейма не может быть перегородок, отличных от сплошной рамки) 
         end
-        return side ∈ r.situation.borders_map[1,j] # i=1
+        i,j = 1,j
     elseif 1<=i<=imax && j>jmax # - (i,j) - за пределами фрейма (в восточном секторе)
         if side ∈ (Ost,West)
             return false # в этих двух направлениях перепятствий быть не может (т.к. на периметре фрейма не может быть перегородок, отличных от сплошной рамки) 
         end   
-        return side ∈ r.situation.borders_map[i,jmax] # j=jmax       
+        i,j = i,jmax # j=jmax       
     elseif i>imax && 1<=j<=jmax # - (i,j) - за пределами фрейма (в южном секторе)
         if side ∈ (Nord,Sud)
             return false # в этих двух направлениях перепятствий быть не может (т.к. на периметре фрейма не может быть перегородок, отличных от сплошной рамки) 
         end      
-        return side ∈ r.situation.borders_map[imax,j] # i=imax
+        i,j = imax,j # i=imax
     elseif 1<=i<=imax && j<1 # - (i,j) - за пределами фрейма (в западном секторе)
         if side ∈ (Ost,West)
             return false # в этих двух направлениях перепятствий быть не может (т.к. на периметре фрейма не может быть перегородок, отличных от сплошной рамки)            
         end      
-        return side ∈ r.situation.borders_map[i,1] # j=1
-    else # - (i,j) - в пределах фрейма (is_inside(r) == true)
-        if r.situation.is_framed == true
-            if side==Nord && i==1 || side==Sud && i==imax || side==West && j==1 || side==Ost && j==jmax
-                return true # - Робот рядом с внешней рамкой и направление - в сторону рамку
-            end
-        end 
-        return is_inner_border(r.situation.robot_position, side, r.situation.borders_map)[1] # side ∈ r.situation.borders_map[i,j]
-    end
+        i,j = i,1 # j=1
+    elseif r.situation.is_framed == true
+        if side==Nord && i==1 || side==Sud && i==imax || side==West && j==1 || side==Ost && j==jmax
+            return true # - Робот рядом с внешней рамкой и направление - в сторону рамку
+        end
+    end 
+    return is_inner_border((i,j), side, r.situation.borders_map)[1] # side ∈ r.situation.borders_map[i,j]
 end # function isborder
 
 """
