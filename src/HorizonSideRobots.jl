@@ -156,8 +156,7 @@ import Base.show
 """
 function show(r::Robot) 
     pre_show_actions(r)
-    draw(r.situation) 
-    r.actualfigure=gcf()
+    draw(r.situation)
 end
 
 """
@@ -171,7 +170,6 @@ function show!(r::Robot)
     pre_show_actions(r)
     SituationDatas.sitedit!(r.situation,"temp.sit")
     # обеспечена возможность редактирования с помощью мыши отображаемой обстановки и немедленного сохранения каждого акта редактирвания в файле temp.sit 
-    r.actualfigure=gcf()
     return nothing 
 end
 
@@ -179,8 +177,8 @@ function pre_show_actions(r::Robot)
     if r.animate==true
         error("В режиме Robot(...;animate==true) невозможен вызов show(::Robot,...)")
     end
-    if isnothing(r.actualfigure)==false
-        close(r.actualfigure)
+    if isnothing(r.situation.fig)==false
+        r.situation.fig = nothing
         @warn("Окно с предыдущей обстановкой при открытии нового было автоматически закрыто")
     end
 end
