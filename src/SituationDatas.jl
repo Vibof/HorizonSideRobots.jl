@@ -59,6 +59,8 @@ module SituationDatas
                 yticklabelsvisible = false,
                 xzoomlock = true,
                 yzoomlock = true,
+                xrectzoom = false,
+                yrectzoom = false,
                 aspect = 1,
             )
             sit.fig = (fig, axis)
@@ -221,11 +223,11 @@ module SituationDatas
  
         x, y = mouseposition(sit.fig[2]) # - координаты относительно лев.нижн.угла поля
         # сторона клетки равна 1
-        if x < 1 || y < 1 || x > sit.frame_size[2]+1 || y > sit.frame_size[1]+1 # <=> клик за пределами axes
+        if x < 0.5 || y < 0.5 || x > sit.frame_size[2]+1.5 || y > sit.frame_size[1]+1.5 # <=> клик за пределами axes
             return
         end
 
-        position = Int.((sit.frame_size[1]-floor(y)+1, ceil(x)-1)) # - позиция клика
+        position = Int.((sit.frame_size[1]-floor(y)+1, floor(x))) # - позиция клика
         Δx, Δy = x-floor(x)-0.5, y-floor(y)-0.5 # - координаты относительно ЦЕНТРА текущей клетки 
         ρ = 0.25 # - величина ("радиус") "внутренности" клетки
         δ = 0.5-ρ # - величина "окрестности" границы
