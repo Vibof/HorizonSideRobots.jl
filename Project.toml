@@ -4,11 +4,10 @@ authors = ["Виктор Федоров <fdorov@mail.ru>"]
 version = "0.3.1"
 
 [deps]
-PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
 
 [compat]
 julia = "1"
-PyPlot = "2"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

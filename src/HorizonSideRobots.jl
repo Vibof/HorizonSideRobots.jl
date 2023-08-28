@@ -48,12 +48,11 @@ using .SituationDatas
 mutable struct Robot
     situation::SituationData
     animate::Bool # если true, то - имеет место непрерывная визуализация смены обстановки при выполнении команд Робота
-    actualfigure::Union{Nothing,Figure}
     Robot(sit::SituationData;animate=false) = begin 
         if animate==true 
             SituationDatas.sitedit!(sit, "untitled.sit")  
         end 
-        new(sit,animate,nothing) 
+        new(sit,animate) 
     end
     Robot(frame_size::Tuple{Integer,Integer}=(UInt(11),UInt(12));animate=false) = Robot(SituationData(frame_size),animate=animate) 
     Robot(num_rows::Integer,num_colons::Integer;animate=false) = Robot((num_rows,num_colons);animate=animate) 
@@ -71,7 +70,7 @@ function move!(r::Robot, side::HorizonSideRobots.HorizonSide)
     end
     r.situation.robot_position = adjacent_position(r.situation.robot_position, side)
     if r.animate==true 
-        draw(r.situation; newfig=false) 
+        draw(r.situation) 
         sleep(ANIMATION_SLEEP_TIME)
     end
     return nothing
@@ -123,7 +122,7 @@ end # function isborder
 putmarker!(r::Robot)::Nothing = begin 
     push!(r.situation.markers_map, position(r))
     if r.animate == true 
-        draw(r.situation;newfig=false) 
+        draw(r.situation) 
     end
     return nothing 
 end
@@ -157,8 +156,7 @@ import Base.show
 """
 function show(r::Robot) 
     pre_show_actions(r)
-    draw(r.situation; newfig=true) 
-    r.actualfigure=gcf()
+    draw(r.situation)
 end
 
 """
@@ -172,7 +170,6 @@ function show!(r::Robot)
     pre_show_actions(r)
     SituationDatas.sitedit!(r.situation,"temp.sit")
     # обеспечена возможность редактирования с помощью мыши отображаемой обстановки и немедленного сохранения каждого акта редактирвания в файле temp.sit 
-    r.actualfigure=gcf()
     return nothing 
 end
 
@@ -180,8 +177,8 @@ function pre_show_actions(r::Robot)
     if r.animate==true
         error("В режиме Robot(...;animate==true) невозможен вызов show(::Robot,...)")
     end
-    if isnothing(r.actualfigure)==false
-        close(r.actualfigure)
+    if isnothing(r.situation.fig)==false
+        r.situation.fig = nothing
         @warn("Окно с предыдущей обстановкой при открытии нового было автоматически закрыто")
     end
 end
@@ -202,9 +199,7 @@ save(r::Robot, outfile::AbstractString)=save(r.situation,outfile)
 Результат редактирования сохраняется в 2-х форматах: в outfile (sit-файле) и в файле outfile*".png" (в формате png)
 """
 function sitedit(infile::AbstractString; outfile=infile)
-    global BUFF_SITUATION, IS_FIXED_ROBOT_POSITION
-    BUFF_SITUATION=SituationData(infile) #; show(BUFF_SITUATION)
-    SituationDatas.sitedit!(BUFF_SITUATION, outfile)
+    SituationDatas.sitedit!(SituationData(infile), outfile)
 end
 
 """
@@ -223,7 +218,8 @@ sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = Situa
 SituationDatas.sitedit!(r::Robot,sitfile::AbstractString) = begin 
     r.situation=SituationData(sitfile)
     if r.animate == true 
-        draw(r.situation;newfig=false) 
+        r.situation.fig = nothing
+        draw(r.situation) 
     end
 end
 
