@@ -5,6 +5,8 @@ module SituationDatas
     using GLMakie, ...HorizonSideRobots #: HorizonSide
     export SituationData, draw, save, adjacent_position, is_inner_border, is_inside, sitedit!, handle_button_press_event!
 
+    const CELL_SIZE = 65
+
     const BORDER_COLOR = :blue
     const BORDER_WIDTH = 3
     
@@ -48,7 +50,7 @@ module SituationDatas
     function draw(sit::SituationData)
         # иницицализируем окно
         if sit.fig === nothing
-            fig = Figure()
+            fig = Figure(resolution=(sit.frame_size[2]*CELL_SIZE, sit.frame_size[1]*CELL_SIZE))
             axis = Axis(fig[1,1],
                 limits = ((1, sit.frame_size[2]+1), (1, sit.frame_size[1]+1)),
                 xticks = (1:1:sit.frame_size[2]+1),
@@ -57,11 +59,16 @@ module SituationDatas
                 yticksvisible = false,
                 xticklabelsvisible = false,
                 yticklabelsvisible = false,
+                spinewidth = BORDER_WIDTH,
+                leftspinecolor = BORDER_COLOR,
+                topspinecolor = BORDER_COLOR,
+                rightspinecolor = BORDER_COLOR,
+                bottomspinecolor = BORDER_COLOR,
                 xzoomlock = true,
                 yzoomlock = true,
                 xrectzoom = false,
                 yrectzoom = false,
-                aspect = 1,
+                aspect = DataAspect(),
             )
             sit.fig = (fig, axis)
         else
