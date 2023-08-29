@@ -44,7 +44,7 @@ module SituationDatas
             r(BODY_CROSS_LENGTH, BODY_CROSS_COLOR)
             r(BODY_SIZE/2-0.1, :white)
         end
-        scatter!(x, y, marker=:circle, markerspace=:data, markersize=BODY_SIZE, color=(BODY_COLOR, BODY_ALPHA))
+        scatter!(x, y, marker=:circle, markerspace=:data, markersize=BODY_SIZE, color=(color, BODY_ALPHA))
     end
 
     function draw(sit::SituationData)
