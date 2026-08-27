@@ -2,7 +2,7 @@
 # Он используется как модуль, вложенный в модуль HorizonSideRobots
 
 module SituationDatas
-    using GLMakie, ...HorizonSideRobots #: HorizonSide
+    using Makie, ...HorizonSideRobots #: HorizonSide
     export SituationData, draw, save, adjacent_position, is_inner_border, is_inside, sitedit!, handle_button_press_event!
 
     const CELL_SIZE = 65
@@ -50,7 +50,7 @@ module SituationDatas
     function draw(sit::SituationData)
         # иницицализируем окно
         if sit.fig === nothing
-            fig = Figure(resolution=(sit.frame_size[2]*CELL_SIZE, sit.frame_size[1]*CELL_SIZE))
+            fig = Figure(size = (sit.frame_size[2]*CELL_SIZE, sit.frame_size[1]*CELL_SIZE))
             axis = Axis(fig[1,1],
                 limits = ((1, sit.frame_size[2]+1), (1, sit.frame_size[1]+1)),
                 xticks = (1:1:sit.frame_size[2]+1),

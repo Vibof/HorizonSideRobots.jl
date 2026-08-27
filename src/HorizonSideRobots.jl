@@ -33,7 +33,7 @@ using .SituationDatas
 
 .    - во втором случае - поле будет иметь указанные размеры
 
-.    - в третьем случае - обстановка загружается из указанного файла
+.    - в третьем случае - обстановка загружается из указанного файла (обычно - с расширением sit)
 
 -- Если `animate`=`true`, то при этом открывается окно с соответствующей начальной обстановкой 
 (которую можно будет редактировать, и результат редактирования будет сохраняться в файлах "untitled.sit", "untitled.sit.png"). 
@@ -41,7 +41,7 @@ using .SituationDatas
 
 Командный интерфейс исполнителя (объекта) типа Robot: `move!`, `isboarder`, `putmarker`, `ismarker`, `temperature`, `show`, `show!` (см. help)
 
-Для подготовительной работы с sit-файлами (в этих файлах сохраняется данные с информацией о некоторой обстановке на поле с Роботом) 
+Для подготовительной работы с sit-файлами (в них сохраняется данные с информацией о некоторой обстановке на поле с Роботом) 
 имеются специальные функции: `show!`, `sitedit`, `sitcreate` (см. `help`)
 
 """
@@ -175,7 +175,7 @@ end
 
 function pre_show_actions(r::Robot)
     if r.animate==true
-        error("В режиме Robot(...;animate==true) невозможен вызов show(::Robot,...)")
+        error("В режиме Robot(...;animate==true) невозможен вызов show(::Robot,...) или show!(::Robot,...)")
     end
     if isnothing(r.situation.fig)==false
         r.situation.fig = nothing
@@ -190,7 +190,7 @@ show(sitfile::AbstractString) = sitfile!="temp.sit" ? show(Robot(sitfile)) : (@w
 
 -- сохраняет обстановку на поле с Роботом в указанном текстовом файле    
 """
-save(r::Robot, outfile::AbstractString)=save(r.situation,outfile)
+save(r::Robot, outfile::AbstractString) = SituationDatas.save(r.situation,outfile)
 
 """
     sitedit(infile::AbstractString; outfile=infile)::Nothing
