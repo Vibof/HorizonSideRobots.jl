@@ -10,10 +10,11 @@ module SituationDatas
     const BORDER_COLOR = :blue
     const BORDER_WIDTH = 3
     
-    const BODY_CROSS_LENGTH = 0.5 # концы креста чуть-чуть выступают за пределы тела робота, но часть креста в пределах тела нейтрализована
-    const BODY_CROSS_THICKNESS = 2
-    const BODY_CROSS_COLOR = :darkgray
-    const BODY_SIZE = 1 # размеры тела робота подобраны для поля 11x12 (важен только наибольший из 2х размеров)  
+    # const BODY_CROSS_LENGTH = 0.5 # концы креста чуть-чуть выступают за пределы тела робота, но часть креста в пределах тела нейтрализована
+    # const BODY_CROSS_THICKNESS = 2
+    # const BODY_CROSS_COLOR = :darkgray
+
+    const BODY_SIZE = 1.3 # размеры тела робота подобраны для поля 11x12 (важен только наибольший из 2х размеров)  
     const BODY_COLOR = :gray 
     const BODY_ALPHA = 0.5 # тело робота делается полупрозрачным с тем, чтобы сквозь него могли бы просвечивать маркеры
     const BODY_STYLE = :o
@@ -39,16 +40,19 @@ module SituationDatas
 
     #body_create(coefficient::AbstractFloat,x::AbstractFloat,y::AbstractFloat; body_color=BODY_COLOR) = scatter([x],[y], c=body_color, s=BODY_SIZE*coefficient, marker=BODY_STYLE, alpha=BODY_ALPHA) 
     function body_create(x::AbstractFloat, y::AbstractFloat, color=BODY_COLOR)
+#=        
+        # Создает "перекрестье" в центре робота
         for posf ∈  [(l -> ([x - l, x + l], [y])), (l -> ([x], [y - l, y + l]))]
             r = (length, color) -> lines!(posf(length)..., color=color, linewidth=BODY_CROSS_THICKNESS)
             r(BODY_CROSS_LENGTH, BODY_CROSS_COLOR)
             r(BODY_SIZE/2-0.1, :white)
         end
+=#
         scatter!(x, y, marker=:circle, markerspace=:data, markersize=BODY_SIZE, color=(color, BODY_ALPHA))
     end
 
     function draw(sit::SituationData)
-        # иницицализируем окно
+        # инициализируем окно
         if sit.fig === nothing
             fig = Figure(size = (sit.frame_size[2]*CELL_SIZE, sit.frame_size[1]*CELL_SIZE))
             axis = Axis(fig[1,1],
