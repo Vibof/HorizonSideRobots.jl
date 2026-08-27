@@ -3,7 +3,7 @@
 
 module SituationDatas
     using PyPlot, ...HorizonSideRobots #: HorizonSide
-    export SituationData, draw, save, adjacent_position, is_inner_border, is_inside, sitedit!, handle_button_press_event!, Figure, gcf
+    export SituationData, draw, save, adjacent_position, is_inner_border, is_inside, edit_sit!, handle_button_press_event!, Figure, gcf
 
     BUFF_SITUATION = nothing # инициализируется в draw(...), а затем используется в в handle_button_press_event!(...)
     IS_FIXED_ROBOT_POSITION = false # используется как флаг в handle_button_press_event!(...)
@@ -35,7 +35,8 @@ module SituationDatas
         SituationData(file_name::AbstractString) =  new(load(file_name)...)
     end
 
-    body_create(coefficient::AbstractFloat,x::AbstractFloat,y::AbstractFloat; body_color=BODY_COLOR) = scatter([x],[y], c=body_color, s=BODY_SIZE*coefficient, marker=BODY_STYLE, alpha=BODY_ALPHA) 
+    body_create(coefficient::AbstractFloat,x::AbstractFloat,y::AbstractFloat; body_color=BODY_COLOR) = 
+        scatter([x],[y], c=body_color, s=BODY_SIZE*coefficient, marker=BODY_STYLE, alpha=BODY_ALPHA) 
 
     function draw(sit::SituationData; newfig::Bool=true) #, file::AbstractString="temp.sit")
     # -- отображает обстановку (sit) в новом окне (newfig==true)) или - в текущем (newfig=false; но если окно отсутствовало, то оно создается)
@@ -54,7 +55,7 @@ module SituationDatas
         # -- создает пустое поле заданных размеров, разделенное на клетки размером 1х1 каждая
             rcParams = PyPlot.PyDict{Any,Any}(PyPlot.matplotlib."rcParams")
             rcParams["toolbar"]="None" # - строки toolbar в figure быть не должно
-            rcParams["axes.edgecolor"]=rcParams["figure.facecolor"] # - рамка осей должен не должна быть видимой
+            rcParams["axes.edgecolor"]=rcParams["figure.facecolor"] # - рамка осей не должна быть видимой
             rcParams["xtick.color"]=rcParams["figure.facecolor"] # - разметка осей не должна быть видимой
             rcParams["ytick.color"]=rcParams["figure.facecolor"] 
             rcParams["figure.figsize"]=(7*axes_size[1]/axes_size[2],7-0.2) # - размеры окна задаются с учетом отсутствия toolbar и сучетом фактических размеров клеточного поля (если бы имелся toolbar, то по умолчанию размеры canvas были бы - 7*7 дюймов)
@@ -128,38 +129,45 @@ module SituationDatas
         is_framed = true # - по умолчанию имеется внешняя ограждающая поле рамка
         temperature_map = rand(-273:500, frame_size...)
         markers_map = Set{Tuple{Int,Int}}() # - пустое множество, т.е. по умолчанию маркеров на поле нет
-        borders_map = fill(Set(), frame_size) # - матрица пустых множеств, т.е. по умолчанию на поле внутренних перегородок нет
+
+        borders_map = [Set{HorizonSide}() for _ in 1:frame_size[1], _ in 1:frame_size[2]]
+        # borders_map - матрица пустых множеств, т.е. по умолчанию на поле внутренних перегородок нет
+
         coefficient = 12/max(frame_size...) # - для размеров поля 11x12 coefficient = 1.0
         return frame_size, coefficient, is_framed, robot_position, temperature_map, markers_map, borders_map
     end
 
     function load(file_name::AbstractString) 
-        io = open(file_name)
-        readline(io) # -> "frame_size:"
-        frame_size = Tuple(parse.(Int, split(readline(io))))
-        readline(io) # -> coefficient
-        coefficient = parse(Float64,readline(io))
-        readline(io) # -> "is_framed:"
-        is_framed = (parse(Bool, readline(io)))
-        readline(io) # -> "robot_position:"
-        robot_position = Tuple(parse.(Int, split(readline(io))))
-        readline(io) # -> "temperature_map:"     
-        temperature_map = reshape(parse.(Int, split(readline(io))), frame_size)
-        readline(io) # -> "markers_map:"
-        line = strip(readline(io))
-        if isempty(line) == true
-            markers_map = Set()
-        else
-            markers_map = Set(Tuple(parse.(Int,split(index_pair, ","))) for index_pair in split(line[2:end-1], ")("))   
-        end
-        readline(io) # -> "borders_map:"
-        borders_map = fill(Set(), prod(frame_size)) # - вектор пустых множеств
-        for k ∈ eachindex(borders_map) 
+        open(file_name) do io
+            readline(io) # -> "frame_size:"
+            frame_size = Tuple(parse.(Int, split(readline(io))))
+            readline(io) # -> coefficient
+            coefficient = parse(Float64,readline(io))
+            readline(io) # -> "is_framed:"
+            is_framed = (parse(Bool, readline(io)))
+            readline(io) # -> "robot_position:"
+            robot_position = Tuple(parse.(Int, split(readline(io))))
+            readline(io) # -> "temperature_map:"     
+            temperature_map = reshape(parse.(Int, split(readline(io))), frame_size)
+            readline(io) # -> "markers_map:"
             line = strip(readline(io))
-            isempty(line) || (borders_map[k] = Set(HorizonSide.(parse.(Int, split(line)))))
+            if isempty(line) == true
+                markers_map = Set()
+            else
+                markers_map = Set(Tuple(parse.(Int,split(index_pair, ","))) for index_pair in split(line[2:end-1], ")("))   
+            end
+            readline(io) # -> "borders_map:"
+
+            borders_map = [Set{HorizonSide}() for _ in 1:prod(frame_size)]
+            # borders_map - вектор пустых множеств
+
+            for k ∈ eachindex(borders_map) 
+                line = strip(readline(io))
+                isempty(line) || (borders_map[k] = Set(HorizonSide.(parse.(Int, split(line)))))
+            end
+            borders_map = reshape(borders_map, frame_size) 
+            return frame_size, coefficient, is_framed, robot_position, temperature_map, markers_map, borders_map
         end
-        borders_map = reshape(borders_map, frame_size) 
-        return frame_size, coefficient, is_framed, robot_position, temperature_map, markers_map, borders_map
     end # nested funcion load
 
     function save(sit::SituationData,file_name::AbstractString)
@@ -300,7 +308,7 @@ module SituationDatas
         savefig(file*".png";format="png") #, facecolor=rcParams["figure.facecolor"], edgecolor=’w’, orientation=’portrait’, papertype=None, transparent=False, bbox_inches=None, pad_inches=0.1)
     end # function handle_button_press_event!
     
-    function sitedit!(sit::SituationData, file::AbstractString)
+    function edit_sit!(sit::SituationData, file::AbstractString)
     # - открывает обстановку, соответствующей структуре данных sit, в НОВОМ окне
     # - обеспечивает возможность редактирования обстановки с помощью мыши
     # - результат сохраняет в 2-х форматах: в файле file (sit-файл) и в файле file*".png" (в формате png)
