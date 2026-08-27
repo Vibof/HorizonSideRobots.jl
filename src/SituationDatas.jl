@@ -3,7 +3,7 @@
 
 module SituationDatas
     using Makie, ...HorizonSideRobots #: HorizonSide
-    export SituationData, draw, save_sit, adjacent_position, is_inner_border, is_inside, sitedit!, handle_button_press_event!
+    export SituationData, draw, save_sit, adjacent_position, is_inner_border, is_inside, edit_sit!, handle_button_press_event!
 
     const CELL_SIZE = 65
 
@@ -299,7 +299,7 @@ module SituationDatas
         draw(sit)
     end # function handle_button_press_event!
     
-    function sitedit!(sit::SituationData, file::AbstractString)
+    function edit_sit!(sit::SituationData, file::AbstractString)
     # - открывает обстановку, соответствующей структуре данных sit, в НОВОМ окне
     # - обеспечивает возможность редактирования обстановки с помощью мыши
     # - результат сохраняет в 2-х форматах: в файле file (sit-файл) и в файле file*".png" (в формате png)
