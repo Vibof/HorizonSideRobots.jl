@@ -220,7 +220,7 @@ create_sit(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = Situ
 
 -- позволяет транслировать в уже имеющийся объект типа Robot обстановку из файла
 """
-SituationDatas.edit_sit!(r::Robot,sitfile::AbstractString) = begin 
+function edit_sit!(r::Robot, sitfile::AbstractString) 
     r.situation=SituationData(sitfile)
     if r.animate == true 
         draw(r.situation;newfig=false) 
