@@ -128,8 +128,6 @@ module SituationDatas
         is_framed = true # - по умолчанию имеется внешняя ограждающая поле рамка
         temperature_map = rand(-273:500, frame_size...)
         markers_map = Set{Tuple{Int,Int}}() # - пустое множество, т.е. по умолчанию маркеров на поле нет
-        
-        # borders_map = fill(Set(), frame_size) 
 
         borders_map = [Set{HorizonSide}() for _ in 1:frame_size[1], _ in 1:frame_size[2]]
         # borders_map - матрица пустых множеств, т.е. по умолчанию на поле внутренних перегородок нет
@@ -159,8 +157,6 @@ module SituationDatas
                 markers_map = Set(Tuple(parse.(Int,split(index_pair, ","))) for index_pair in split(line[2:end-1], ")("))   
             end
             readline(io) # -> "borders_map:"
-
-            # borders_map = fill(Set(), prod(frame_size))
             
             borders_map = [Set{HorizonSide}() for _ in 1:prod(frame_size)]
             # borders_map - вектор пустых множеств
