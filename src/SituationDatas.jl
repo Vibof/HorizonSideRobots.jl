@@ -3,7 +3,7 @@
 
 module SituationDatas
     using PyPlot, ...HorizonSideRobots #: HorizonSide
-    export SituationData, draw, save, adjacent_position, is_inner_border, is_inside, edit_sit!, handle_button_press_event!, Figure, gcf
+    export SituationData, draw, save_sit, adjacent_position, is_inner_border, is_inside, edit_sit!, handle_button_press_event!, Figure, gcf
 
     BUFF_SITUATION = nothing # инициализируется в draw(...), а затем используется в в handle_button_press_event!(...)
     IS_FIXED_ROBOT_POSITION = false # используется как флаг в handle_button_press_event!(...)
@@ -170,7 +170,7 @@ module SituationDatas
         end
     end # nested funcion load
 
-    function save(sit::SituationData,file_name::AbstractString)
+    function save_sit(sit::SituationData,file_name::AbstractString)
         open(file_name,"w") do io
             write(io, "frame_size:\n") # 11 12
             write(io, join(sit.frame_size, " "),"\n")
@@ -189,7 +189,7 @@ module SituationDatas
                 write(io, join(Int.(set_positions)," "), "\n")   # 0 1 3
             end
         end 
-    end # nested function save
+    end # nested function save_sit
 
     function adjacent_position(position::Tuple{Integer,Integer},side::HorizonSide)
     # - возвращает соседнюю позицию (в пределах фрейма) с заданного направления
@@ -304,7 +304,7 @@ module SituationDatas
         draw(BUFF_SITUATION; newfig=false)
         # Изменения должны отображаться в тех же самых координатных осях, где они и были произведены, поэтому обязательно должно быть 
         # newfig==false
-        save(BUFF_SITUATION, file)
+        save_sit(BUFF_SITUATION, file)
         savefig(file*".png";format="png") #, facecolor=rcParams["figure.facecolor"], edgecolor=’w’, orientation=’portrait’, papertype=None, transparent=False, bbox_inches=None, pad_inches=0.1)
     end # function handle_button_press_event!
     
