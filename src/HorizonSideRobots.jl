@@ -5,7 +5,7 @@
 module HorizonSideRobots # "Робот на клетчатом поле со сторонами горизонта"
 
 export HorizonSide, Nord, Sud, West, Ost, Robot, move!, isborder, putmarker!, ismarker, temperature, 
-show, show!, save, sitedit, sitedit!, sitcreate
+show_sit, show_sit!, save_sit, edit_sit, edit_sit!, create_sit
 
 """
     @enum HorizonSide Nord=0 West=1 Sud=2 Ost=3
@@ -39,10 +39,10 @@ using .SituationDatas
 (которую можно будет редактировать, и результат редактирования будет сохраняться в файлах "untitled.sit", "untitled.sit.png"). 
 Иначе просто создается объект, соодержащий данные, определяющие эту обстановку (визуализации обстановки в этом случае нет).
 
-Командный интерфейс исполнителя (объекта) типа Robot: `move!`, `isboarder`, `putmarker`, `ismarker`, `temperature`, `show`, `show!` (см. help)
+Командный интерфейс исполнителя (объекта) типа Robot: `move!`, `isboarder`, `putmarker`, `ismarker`, `temperature`, `show_sit`, `show_sit!` (см. help)
 
 Для подготовительной работы с sit-файлами (в них сохраняется данные с информацией о некоторой обстановке на поле с Роботом) 
-имеются специальные функции: `show!`, `sitedit`, `sitcreate` (см. `help`)
+имеются специальные функции: `show_sit!`, `edit_sit`, `create_sit` (см. `help`)
 
 """
 mutable struct Robot
@@ -50,7 +50,7 @@ mutable struct Robot
     animate::Bool # если true, то - имеет место непрерывная визуализация смены обстановки при выполнении команд Робота
     Robot(sit::SituationData;animate=false) = begin 
         if animate==true 
-            SituationDatas.sitedit!(sit, "untitled.sit")  
+            SituationDatas.edit_sit!(sit, "untitled.sit")  
         end 
         new(sit,animate) 
     end
@@ -141,41 +141,40 @@ ismarker(r::Robot)::Bool = position(r) ∈ r.situation.markers_map
 """
 temperature(r::Robot)::Int = is_inside(r) ? r.situation.temperature_map[position(r)...] : 0
 
-import Base.show
 """
-    show(r::Robot)::Nothing
+    show_sit(r::Robot)::Nothing
 
 -- Открывает окно с текущей обстановкой на поле с Роботом, при этом невозможно редактирование обстановки с помощью мыши 
 (устанавливать/снимать перегородки и/или маркеры, перемещать Робота). Если же необходимо иметь возможность 
-редактировать показанную обстановку, то вместо show(::Robot) следует использовать функцию show!(::Robot)
+редактировать показанную обстановку, то вместо show_sit(::Robot) следует использовать функцию show_sit!(::Robot)
 
-    show(sitfile::AbstractString)::Nothing
+    show_sit(sitfile::AbstractString)::Nothing
 
 -- Открывает окно с текущей обстановкой на поле с Роботом, загруженной непосредственно из файла. 
-Редактирование обстановки невозможно (для редактирования sit-файлов имеется специальная функция sitedit).    
+Редактирование обстановки невозможно (для редактирования sit-файлов имеется специальная функция edit_sit).    
 """
-function show(r::Robot) 
-    pre_show_actions(r)
+function show_sit(r::Robot) 
+    pre_show_sit_actions(r)
     draw(r.situation)
 end
 
 """
-    show!(r::Robot)::Nothing
+    show_sit!(r::Robot)::Nothing
 
 -- Открывает окно с текущей обстановкой на поле с Роботом, и предоставляет возможность редактирования
  обстановки с помощью мыши (устанавливать/снимать перегородки и/или маркеры, перемещать Робота).
  Результ редактирования автоматически сохраняется в файлах "temp.sit" и "temp.sit.png" 
 """
-function show!(r::Robot)
-    pre_show_actions(r)
-    SituationDatas.sitedit!(r.situation,"temp.sit")
+function show_sit!(r::Robot)
+    pre_show_sit_actions(r)
+    SituationDatas.edit_sit!(r.situation,"temp.sit")
     # обеспечена возможность редактирования с помощью мыши отображаемой обстановки и немедленного сохранения каждого акта редактирвания в файле temp.sit 
     return nothing 
 end
 
-function pre_show_actions(r::Robot)
+function pre_show_sit_actions(r::Robot)
     if r.animate==true
-        error("В режиме Robot(...;animate==true) невозможен вызов show(::Robot,...) или show!(::Robot,...)")
+        error("В режиме Robot(...;animate==true) невозможен вызов show_sit(::Robot,...) или show_sit!(::Robot,...)")
     end
     if isnothing(r.situation.fig)==false
         r.situation.fig = nothing
@@ -183,39 +182,39 @@ function pre_show_actions(r::Robot)
     end
 end
 
-show(sitfile::AbstractString) = sitfile!="temp.sit" ? show(Robot(sitfile)) : (@warn "Просмотр temp.sit возможен только с помощью show(::Robot;...)")
+show_sit(sitfile::AbstractString) = sitfile!="temp.sit" ? show_sit(Robot(sitfile)) : (@warn "Просмотр temp.sit возможен только с помощью show_sit(::Robot;...)")
 
 """
-    save(r::Robot, sitfile::AbstractString)::Nothing
+    save_sit(r::Robot, sitfile::AbstractString)::Nothing
 
 -- сохраняет обстановку на поле с Роботом в указанном текстовом файле    
 """
-save(r::Robot, outfile::AbstractString) = SituationDatas.save(r.situation,outfile)
+save_sit(r::Robot, outfile::AbstractString) = SituationDatas.save_sit(r.situation,outfile)
 
 """
-    sitedit(infile::AbstractString; outfile=infile)::Nothing
+    edit_sit(infile::AbstractString; outfile=infile)::Nothing
 
 -- предназначена для визуального (с помощью мыши) редактирования обстановки на поле с Роботом, предварительно сохраненной в sit-файле. 
 Результат редактирования сохраняется в 2-х форматах: в outfile (sit-файле) и в файле outfile*".png" (в формате png)
 """
-function sitedit(infile::AbstractString; outfile=infile)
-    SituationDatas.sitedit!(SituationData(infile), outfile)
+function edit_sit(infile::AbstractString; outfile=infile)
+    SituationDatas.edit_sit!(SituationData(infile), outfile)
 end
 
 """
-    sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit")::Nothing
+    create_sit(num_rows::Integer,num_colons::Integer; newfile="untitled.sit")::Nothing
 
 -- предназначена для создания и визуального (с помощью мыши) редактирования нового sit-файле (содержащего данные некоторой обстановки на поле сроботом). 
 Результат редактирования сохраняется в 2-х форматах: в newfile (sit-файле) и в файле newfile*".png" (в формате png)   
 """    
-sitcreate(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = SituationDatas.sitedit!(SituationData((num_rows, num_colons)), newfile)
+create_sit(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = SituationDatas.edit_sit!(SituationData((num_rows, num_colons)), newfile)
 
 """
-    sitedit!(r::Robot,sitfile::AbstractString)
+    edit_sit!(r::Robot,sitfile::AbstractString)
 
 -- позволяет транслировать в уже имеющийся объект типа Robot обстановку из файла
 """
-SituationDatas.sitedit!(r::Robot,sitfile::AbstractString) = begin 
+SituationDatas.edit_sit!(r::Robot,sitfile::AbstractString) = begin 
     r.situation=SituationData(sitfile)
     if r.animate == true 
         r.situation.fig = nothing

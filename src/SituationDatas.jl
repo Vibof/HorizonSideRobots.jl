@@ -3,7 +3,7 @@
 
 module SituationDatas
     using Makie, ...HorizonSideRobots #: HorizonSide
-    export SituationData, draw, save, adjacent_position, is_inner_border, is_inside, sitedit!, handle_button_press_event!
+    export SituationData, draw, save_sit, adjacent_position, is_inner_border, is_inside, sitedit!, handle_button_press_event!
 
     const CELL_SIZE = 65
 
@@ -163,7 +163,7 @@ module SituationDatas
         return frame_size, coefficient, is_framed, robot_position, temperature_map, markers_map, borders_map, nothing
     end # nested funcion load
 
-    function save(sit::SituationData,file_name::AbstractString)
+    function save_sit(sit::SituationData,file_name::AbstractString)
         open(file_name,"w") do io
             write(io, "frame_size:\n") # 11 12
             write(io, join(sit.frame_size, " "),"\n")
@@ -182,7 +182,7 @@ module SituationDatas
                 write(io, join(Int.(set_positions)," "), "\n")   # 0 1 3
             end
         end 
-    end # nested function save
+    end # nested function save_sit
 
     function adjacent_position(position::Tuple{Integer,Integer},side::HorizonSide)
     # - возвращает соседнюю позицию (в пределах фрейма) с заданного направления
@@ -295,7 +295,7 @@ module SituationDatas
                 end 
             end
         end
-        save(sit, file)
+        save_sit(sit, file)
         draw(sit)
     end # function handle_button_press_event!
     
