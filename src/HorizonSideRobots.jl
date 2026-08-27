@@ -193,7 +193,7 @@ show_sit(sitfile::AbstractString) = sitfile!="temp.sit" ? show_sit(Robot(sitfile
 
 -- сохраняет обстановку на поле с Роботом в указанном текстовом файле    
 """
-save_sit(r::Robot, outfile::AbstractString)=save_sit(r.situation,outfile)
+save_sit(r::Robot, outfile::AbstractString) = SituationDatas.save_sit(r.situation,outfile)
 
 """
     edit_sit(infile::AbstractString; outfile=infile)::Nothing
