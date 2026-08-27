@@ -81,7 +81,7 @@ module SituationDatas
 
         get_coordinates(position::Tuple{Integer,Integer}) = (position[2]+1, sit.frame_size[1]-position[1]+1)
 
-        # отрисовка внутренних границы
+        # отрисовка внутренних границ
         begin
             # Предполагается, что сторона каждой клетки поля равна 1
             # клетки на границе поля НЕ исключаются из рассмотрения, т.к. возможны перегородки, "уходящие в бескнечность"              
@@ -128,7 +128,12 @@ module SituationDatas
         is_framed = true # - по умолчанию имеется внешняя ограждающая поле рамка
         temperature_map = rand(-273:500, frame_size...)
         markers_map = Set{Tuple{Int,Int}}() # - пустое множество, т.е. по умолчанию маркеров на поле нет
-        borders_map = fill(Set(), frame_size) # - матрица пустых множеств, т.е. по умолчанию на поле внутренних перегородок нет
+        
+        # borders_map = fill(Set(), frame_size) 
+
+        borders_map = [Set{HorizonSide}() for _ in 1:frame_size[1], _ in 1:frame_size[2]]
+        # borders_map - матрица пустых множеств, т.е. по умолчанию на поле внутренних перегородок нет
+
         coefficient = 12/max(frame_size...) # - для размеров поля 11x12 coefficient = 1.0
         fig = nothing
         return frame_size, coefficient, is_framed, robot_position, temperature_map, markers_map, borders_map, fig
@@ -154,7 +159,12 @@ module SituationDatas
                 markers_map = Set(Tuple(parse.(Int,split(index_pair, ","))) for index_pair in split(line[2:end-1], ")("))   
             end
             readline(io) # -> "borders_map:"
-            borders_map = fill(Set(), prod(frame_size)) # - вектор пустых множеств
+
+            # borders_map = fill(Set(), prod(frame_size))
+            
+            borders_map = [Set{HorizonSide}() for _ in 1:prod(frame_size)]
+            # borders_map - вектор пустых множеств
+            
             for k ∈ eachindex(borders_map) 
                 line = strip(readline(io))
                 isempty(line) || (borders_map[k] = Set(HorizonSide.(parse.(Int, split(line)))))
