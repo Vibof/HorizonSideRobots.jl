@@ -135,32 +135,33 @@ module SituationDatas
     end
 
     function load(file_name::AbstractString) 
-        io = open(file_name)
-        readline(io) # -> "frame_size:"
-        frame_size = Tuple(parse.(Int, split(readline(io))))
-        readline(io) # -> coefficient
-        coefficient = parse(Float64,readline(io))
-        readline(io) # -> "is_framed:"
-        is_framed = (parse(Bool, readline(io)))
-        readline(io) # -> "robot_position:"
-        robot_position = Tuple(parse.(Int, split(readline(io))))
-        readline(io) # -> "temperature_map:"     
-        temperature_map = reshape(parse.(Int, split(readline(io))), frame_size)
-        readline(io) # -> "markers_map:"
-        line = strip(readline(io))
-        if isempty(line) == true
-            markers_map = Set()
-        else
-            markers_map = Set(Tuple(parse.(Int,split(index_pair, ","))) for index_pair in split(line[2:end-1], ")("))   
-        end
-        readline(io) # -> "borders_map:"
-        borders_map = fill(Set(), prod(frame_size)) # - вектор пустых множеств
-        for k ∈ eachindex(borders_map) 
+        open(file_name) do io
+            readline(io) # -> "frame_size:"
+            frame_size = Tuple(parse.(Int, split(readline(io))))
+            readline(io) # -> coefficient
+            coefficient = parse(Float64,readline(io))
+            readline(io) # -> "is_framed:"
+            is_framed = (parse(Bool, readline(io)))
+            readline(io) # -> "robot_position:"
+            robot_position = Tuple(parse.(Int, split(readline(io))))
+            readline(io) # -> "temperature_map:"     
+            temperature_map = reshape(parse.(Int, split(readline(io))), frame_size)
+            readline(io) # -> "markers_map:"
             line = strip(readline(io))
-            isempty(line) || (borders_map[k] = Set(HorizonSide.(parse.(Int, split(line)))))
+            if isempty(line) == true
+                markers_map = Set()
+            else
+                markers_map = Set(Tuple(parse.(Int,split(index_pair, ","))) for index_pair in split(line[2:end-1], ")("))   
+            end
+            readline(io) # -> "borders_map:"
+            borders_map = fill(Set(), prod(frame_size)) # - вектор пустых множеств
+            for k ∈ eachindex(borders_map) 
+                line = strip(readline(io))
+                isempty(line) || (borders_map[k] = Set(HorizonSide.(parse.(Int, split(line)))))
+            end
+            borders_map = reshape(borders_map, frame_size) 
+            return frame_size, coefficient, is_framed, robot_position, temperature_map, markers_map, borders_map, nothing
         end
-        borders_map = reshape(borders_map, frame_size) 
-        return frame_size, coefficient, is_framed, robot_position, temperature_map, markers_map, borders_map, nothing
     end # nested funcion load
 
     function save_sit(sit::SituationData,file_name::AbstractString)
