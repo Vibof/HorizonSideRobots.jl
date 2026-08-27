@@ -52,7 +52,7 @@ module SituationDatas
         
         function field_create(axes_size::Tuple{UInt,UInt}, newfig::Bool) 
         # -- создает пустое поле заданных размеров, разделенное на клетки размером 1х1 каждая
-            rcParams = PyPlot.PyDict(PyPlot.matplotlib."rcParams")
+            rcParams = PyPlot.PyDict{Any,Any}(PyPlot.matplotlib."rcParams")
             rcParams["toolbar"]="None" # - строки toolbar в figure быть не должно
             rcParams["axes.edgecolor"]=rcParams["figure.facecolor"] # - рамка осей должен не должна быть видимой
             rcParams["xtick.color"]=rcParams["figure.facecolor"] # - разметка осей не должна быть видимой
