@@ -11,13 +11,11 @@ makedocs(;
         canonical="https://Vibof.github.io/HorizonSideRobots.jl",
         assets=String[],
     ),
+
     pages=[
-        "Заглавная" => "index.md",
-        "Как установить Робота на своем компьютере" => "setup.md",
-        "Конструктор объектов типа Robot" => "constructor.md",
-        "Командный интерфейс Робота" => "api.md",
-        "Пример выполнения программы для Робота" => "example.md",
-        "Начальные сведения о языке программирования Julia" => "language.md"
+    "Заглавная" => "index.md",
+    "Установка и начало работы" => "setup.md",
+    "Пример разработки программного кода" => "source_mark_kross.md",
     ],
 )
 
