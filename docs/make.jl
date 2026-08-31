@@ -24,6 +24,7 @@ makedocs(;
         ],
 
         "API" => "api.md",
+        "Формат sit-файла" => "sit_format.md",
     ],
 )
 

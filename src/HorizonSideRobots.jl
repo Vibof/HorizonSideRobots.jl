@@ -33,7 +33,7 @@ using .SituationDatas
 
 .    - во втором случае - поле будет иметь указанные размеры
 
-.    - в третьем случае - обстановка загружается из указанного файла (обычно - с расширением sit)
+.    - в третьем случае - обстановка загружается из указанного sit-файла
 
 -- Если `animate`=`true`, то при этом открывается окно с соответствующей начальной обстановкой 
 (которую можно будет редактировать, и результат редактирования будет сохраняться в файле "untitled.sit"). 
@@ -187,7 +187,7 @@ show_sit(sitfile::AbstractString) = sitfile!="untitled.sit" ? show_sit(Robot(sit
 """
     save_sit(r::Robot, sitfile::AbstractString)::Nothing
 
--- сохраняет обстановку на поле с Роботом в указанном текстовом файле    
+-- сохраняет обстановку на поле с Роботом в указанном sit-файле    
 """
 save_sit(r::Robot, outfile::AbstractString) = SituationDatas.save_sit(r.situation,outfile)
 
@@ -204,7 +204,8 @@ end
 """
     create_sit(num_rows::Integer,num_colons::Integer; newfile="untitled.sit")::Nothing
 
--- предназначена для создания и визуального (с помощью мыши) редактирования нового sit-файле (содержащего данные некоторой обстановки на поле сроботом). 
+-- предназначена для создания и визуального (с помощью мыши) редактирования нового sit-файла.
+
 Результат редактирования сохраняется в файле newfile  
 """    
 create_sit(num_rows::Integer, num_colons::Integer; newfile = "untitled.sit") = 

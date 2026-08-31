@@ -88,7 +88,7 @@ module SituationDatas
         # отрисовка внутренних границ
         begin
             # Предполагается, что сторона каждой клетки поля равна 1
-            # клетки на границе поля НЕ исключаются из рассмотрения, т.к. возможны перегородки, "уходящие в бескнечность"              
+            # клетки на границе поля НЕ исключаются из рассмотрения, т.к. возможны перегородки, "уходящие в бесконечность"              
             for i ∈ 1:sit.frame_size[1], j ∈ 1:sit.frame_size[2]
                 x, y = get_coordinates((i, j))
                 r = (x, y) -> lines!(x, y, color=BORDER_COLOR, linewidth=BORDER_WIDTH)
@@ -257,7 +257,7 @@ module SituationDatas
     
         if abs(Δy) > ρ || abs(Δx) > ρ # клик - по границе между клетками (или в окрестности внешней рамки)
             if is_fixed.x == true
-                # пока робот не поставлен в новую позицию, редактировать перегородки не возможно
+                # пока робот не поставлен в новую позицию, редактировать перегородки невозможно
                 return
             end
         end
@@ -291,7 +291,7 @@ module SituationDatas
             set_or_del_border!(position,Sud)
         elseif Δx >= abs(Δy) && Δx >= ρ   
             set_or_del_border!(position,Ost)
-        else # set_or_del_marker! ИЛИ фикировать текущее положение робота ИЛИ переместить зафиксированного робота в новое положение
+        else # set_or_del_marker! ИЛИ фиксировать текущее положение робота ИЛИ переместить зафиксированного робота в новое положение
             if sit.robot_position == position 
                 if is_fixed.x == false                   
                     is_fixed.x = true
