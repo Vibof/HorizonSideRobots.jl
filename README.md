@@ -2,7 +2,6 @@
 
 ![Пример обстановки на поле](docs/src/extra/for_readme.png)
 
-
 `HorizonSideRobots.jl` — пакет для языка Julia, реализующий учебного исполнителя «Робот на клетчатом поле».
 
 Пакет предназначен для поддержки начального курса программирования для студентов технического вуза, цель которого — научить писать хорошо структурированный программный код.
@@ -28,4 +27,3 @@
 - [Полная документация HorizonSideRobots.jl](https://vibof.github.io/HorizonSideRobots.jl/dev/)
 - [Официальная документация языка Julia](https://docs.julialang.org/)
 - [Русскоязычная документация Julia в проекте Engee](https://engee.com/helpcenter/stable/ru/julia/engee-language.html)
-
