@@ -23,7 +23,7 @@
 - [Установка и начало работы](docs/src/setup.md)
 - [API Робота](docs/src/api.md)
 - [Пример разработки программного кода](docs/src/source_mark_kross.md)
-- [Авторский курс по основам программирования и алгоритмики](https://vibof.github.io/HorizonSideRobots.jl/dev/methodology/)
+- [Авторский курс по основам программирования и алгоритмики](https://vibof.github.io/HorizonSideRobots.jl/dev/methodology/lecture-1/)
 - [Полная документация HorizonSideRobots.jl](https://vibof.github.io/HorizonSideRobots.jl/dev/)
 - [Официальная документация языка Julia](https://docs.julialang.org/)
 - [Русскоязычная документация Julia в проекте Engee](https://engee.com/helpcenter/stable/ru/julia/engee-language.html)
