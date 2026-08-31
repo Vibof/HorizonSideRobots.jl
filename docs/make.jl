@@ -21,8 +21,9 @@ makedocs(;
 
         "Курс по основам программирования" => [
             "Оглавление" => "methodology/index.md",
+            "История изменений" => "methodology/CHANGELOG.md",
         ],
-
+       
         "API" => "api.md",
         "Формат sit-файла" => "sit_format.md",
     ],
