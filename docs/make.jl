@@ -20,7 +20,7 @@ makedocs(;
         "Пример разработки программного кода" => "source_mark_kross.md",
 
         "Курс по основам программирования" => [
-            "Оглавление" => "methodology/index.md",
+            "Введение" => "methodology/lecture-1.md",
             "История изменений" => "methodology/CHANGELOG.md",
         ],
        
