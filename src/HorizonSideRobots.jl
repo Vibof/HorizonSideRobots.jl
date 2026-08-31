@@ -39,7 +39,7 @@ using .SituationDatas
 (которую можно будет редактировать, и результат редактирования будет сохраняться в файле "untitled.sit"). 
 Иначе просто создается объект, соодержащий данные, определяющие эту обстановку (визуализации обстановки в этом случае нет).
 
-Командный интерфейс исполнителя (объекта) типа Robot: `move!`, `isborder`, `putmarker`, `ismarker`, `temperature`, `show_sit`, `show_sit!` (см. help)
+Командный интерфейс исполнителя (объекта) типа Robot: `move!`, `isborder`, `putmarker!`, `ismarker`, `temperature`, `show_sit`, `show_sit!` (см. help)
 
 Для подготовительной работы с sit-файлами (в них сохраняется данные с информацией о некоторой обстановке на поле с Роботом) 
 имеются специальные функции: `show_sit!`, `edit_sit`, `create_sit` (см. `help`)
@@ -163,7 +163,7 @@ end
 
 -- Открывает окно с текущей обстановкой на поле с Роботом, и предоставляет возможность редактирования
  обстановки с помощью мыши (устанавливать/снимать перегородки и/или маркеры, перемещать Робота).
- Результ редактирования автоматически сохраняется в файлах "temp.sit" и "temp.sit.png" 
+ Результ редактирования автоматически сохраняется в файле "untitled.sit" 
 """
 function show_sit!(r::Robot)
     pre_show_sit_actions(r)
@@ -192,10 +192,10 @@ show_sit(sitfile::AbstractString) = sitfile!="temp.sit" ? show_sit(Robot(sitfile
 save_sit(r::Robot, outfile::AbstractString) = SituationDatas.save_sit(r.situation,outfile)
 
 """
-    edit_sit(infile::AbstractString; outfile=infile)::Nothing
+    edit_sit(infile::AbstractString; outfile = infile)::Nothing
 
 -- предназначена для визуального (с помощью мыши) редактирования обстановки на поле с Роботом, предварительно сохраненной в sit-файле. 
-Результат редактирования сохраняется в 2-х форматах: в outfile (sit-файле) и в файле outfile*".png" (в формате png)
+Результат редактирования сохраняется в файле outfile
 """
 function edit_sit(infile::AbstractString; outfile=infile)
     SituationDatas.edit_sit!(SituationData(infile), outfile)
@@ -205,12 +205,14 @@ end
     create_sit(num_rows::Integer,num_colons::Integer; newfile="untitled.sit")::Nothing
 
 -- предназначена для создания и визуального (с помощью мыши) редактирования нового sit-файле (содержащего данные некоторой обстановки на поле сроботом). 
-Результат редактирования сохраняется в 2-х форматах: в newfile (sit-файле) и в файле newfile*".png" (в формате png)   
+Результат редактирования сохраняется в файле newfile  
 """    
-create_sit(num_rows::Integer,num_colons::Integer; newfile="untitled.sit") = SituationDatas.edit_sit!(SituationData((num_rows, num_colons)), newfile)
+create_sit(num_rows::Integer, num_colons::Integer; newfile = "untitled.sit") = 
+    SituationDatas.edit_sit!(SituationData((num_rows, num_colons)), newfile)
+
 
 """
-    edit_sit!(r::Robot,sitfile::AbstractString)
+    edit_sit!(r::Robot, sitfile::AbstractString)
 
 -- позволяет транслировать в уже имеющийся объект типа Robot обстановку из файла
 """

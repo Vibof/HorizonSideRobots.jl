@@ -3,3 +3,6 @@
 /docs/build/
 /docs/site/
 /docs/Manifest.toml
+
+README.pdf
+/docs/src/*.pdf

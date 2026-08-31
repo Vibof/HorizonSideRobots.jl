@@ -142,6 +142,8 @@ module SituationDatas
     end
 
     function load(file_name::AbstractString) 
+        check_sit_extension(file_name)
+
         open(file_name) do io
             readline(io) # -> "frame_size:"
             frame_size = Tuple(parse.(Int, split(readline(io))))
@@ -174,7 +176,9 @@ module SituationDatas
         end
     end # nested funcion load
 
-    function save_sit(sit::SituationData,file_name::AbstractString)
+    function save_sit(sit::SituationData, file_name::AbstractString)
+        check_sit_extension(file_name)
+
         open(file_name,"w") do io
             write(io, "frame_size:\n") # 11 12
             write(io, join(sit.frame_size, " "),"\n")
@@ -233,7 +237,7 @@ module SituationDatas
         # ограничивающая поле (фрейм) перегородка ставится/снимается за один клик, все остальные перегородки состоят
         # из отрезков (сторон клеток), которые ставятся/снимаются только индивидуально.
         # Клик за пределами axes пока что игнорируется (планируется, что когда-нибудь такие клики будут приводить к соответствующим изменениям размеров поля).
-        # Результат каждого акта редактирования обстановки немедленно сохраняется в файле file
+        # Результат каждого акта редактирования обстановки немедленно сохраняется в sit-файле file
 
         if event.action != Mouse.press
             return
@@ -313,12 +317,22 @@ module SituationDatas
     function edit_sit!(sit::SituationData, file::AbstractString)
     # - открывает обстановку, соответствующей структуре данных sit, в НОВОМ окне
     # - обеспечивает возможность редактирования обстановки с помощью мыши
-    # - результат сохраняет в 2-х форматах: в файле file (sit-файл) и в файле file*".png" (в формате png)
+    # - результат сохраняет в sit-файле file
+
+        check_sit_extension(file)
+    
         sit.fig = nothing
         draw(sit)
 
         is_fixed = Ref(false)
         on(event -> handle_button_press_event!(event, sit, file, is_fixed), events(sit.fig[2]).mousebutton)
+        return nothing
+    end
+
+
+    function check_sit_extension(file_name::AbstractString)
+        lowercase(splitext(file_name)[2]) == ".sit" ||
+            throw(ArgumentError("File must have .sit extension: $file_name"))
         return nothing
     end
 end # module SituationDatas
