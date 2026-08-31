@@ -167,8 +167,8 @@ end
 """
 function show_sit!(r::Robot)
     pre_show_sit_actions(r)
-    SituationDatas.edit_sit!(r.situation,"temp.sit")
-    # обеспечена возможность редактирования с помощью мыши отображаемой обстановки и немедленного сохранения каждого акта редактирвания в файле temp.sit 
+    SituationDatas.edit_sit!(r.situation,"untitled.sit")
+    # обеспечена возможность редактирования с помощью мыши отображаемой обстановки и немедленного сохранения каждого акта редактирвания в файле untitled.sit 
     return nothing 
 end
 
@@ -182,7 +182,7 @@ function pre_show_sit_actions(r::Robot)
     end
 end
 
-show_sit(sitfile::AbstractString) = sitfile!="temp.sit" ? show_sit(Robot(sitfile)) : (@warn "Просмотр temp.sit возможен только с помощью show_sit(::Robot;...)")
+show_sit(sitfile::AbstractString) = sitfile!="untitled.sit" ? show_sit(Robot(sitfile)) : (@warn "Просмотр untitled.sit возможен только с помощью show_sit(::Robot;...)")
 
 """
     save_sit(r::Robot, sitfile::AbstractString)::Nothing
